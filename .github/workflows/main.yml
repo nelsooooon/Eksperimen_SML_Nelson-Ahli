@@ -34,7 +34,7 @@ jobs:
 
       - name: Run Preprocessing
         run: |
-          python preprocessing/automate_Nelson-Ahli.py
+          python preprocessing/automate_Nelson_Ahli.py
 
       - name: Save to repo
         run: |
