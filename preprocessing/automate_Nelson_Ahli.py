@@ -46,11 +46,10 @@ def preprocess_data(data, target_column, save_path, file_path, final_dataset_pat
     binnings = [0, 12, 24, 48, 60, 80]
     labels = ['< 1 Year', '1-2 Years', '2-4 Years', '4-5 Years', '> 5 Years']
 
-    data['tenure_binning'] = pd.cut(data['tenure'], bins=binnings, labels=labels, include_lowest=True)
+    data['tenure_binning'] = pd.cut(data['tenure'], bins=binnings, labels=labels, include_lowest=True).astype(str)
 
     le = LabelEncoder()
     target = le.fit_transform(data[target_column])
-    data[target_column] = target
 
     numeric_transformer = Pipeline(steps=[
         ('imputer', SimpleImputer(strategy='median')),
@@ -72,10 +71,13 @@ def preprocess_data(data, target_column, save_path, file_path, final_dataset_pat
             ('num', numeric_transformer, numeric_features),
             ('cat', categorical_transformer, categorical_features),
             ('ord', ordinal_transformer, ordinal_features)
-        ]
+        ],
+        verbose_feature_names_out=False
     )
 
     data = pd.DataFrame(preprocessor.fit_transform(data), columns=preprocessor.get_feature_names_out())
+    data[target_column] = target
+
     data.to_csv(final_dataset_path, index=False)
     print(f"Data berhasil disimpan ke: {final_dataset_path}")
 
