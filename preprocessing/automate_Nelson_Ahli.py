@@ -9,7 +9,7 @@ Original file is located at
 
 import pandas as pd
 
-from sklearn.preprocessing import StandardScaler, OneHotEncoder, OrdinalEncoder
+from sklearn.preprocessing import LabelEncoder, StandardScaler, OneHotEncoder, OrdinalEncoder
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
@@ -26,7 +26,7 @@ def preprocess_data(data, target_column, save_path, file_path, final_dataset_pat
 
     numeric_features = ['tenure', 'MonthlyCharges', 'TotalCharges']
     categorical_features = data.select_dtypes(include=['object']).columns.tolist()
-    ordinal_features = ['Churn', 'tenure_binning']
+    ordinal_features = ['tenure_binning']
 
     column_names = data.columns
     column_names = data.columns.drop(target_column)
@@ -47,6 +47,10 @@ def preprocess_data(data, target_column, save_path, file_path, final_dataset_pat
     labels = ['< 1 Year', '1-2 Years', '2-4 Years', '4-5 Years', '> 5 Years']
 
     data['tenure_binning'] = pd.cut(data['tenure'], bins=binnings, labels=labels, include_lowest=True)
+
+    le = LabelEncoder()
+    target = le.fit_transform(data[target_column])
+    data[target_column] = target
 
     numeric_transformer = Pipeline(steps=[
         ('imputer', SimpleImputer(strategy='median')),
@@ -72,20 +76,10 @@ def preprocess_data(data, target_column, save_path, file_path, final_dataset_pat
     )
 
     data = pd.DataFrame(preprocessor.fit_transform(data), columns=preprocessor.get_feature_names_out())
-    data.to_csv(file_path, index=False)
-    print(f"Data berhasil disimpan ke: {file_path}")
-
-    X = data.drop(columns=[target_column])
-    y = data[target_column]
-
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-    X_train = preprocessor.fit_transform(X_train)
-    X_test = preprocessor.transform(X_test)
+    data.to_csv(final_dataset_path, index=False)
+    print(f"Data berhasil disimpan ke: {final_dataset_path}")
 
     dump(preprocessor, save_path)
-
-    return X_train, X_test, y_train, y_test
 
 target_column = 'Churn'
 save_path = 'preprocessing/preprocessor_pipeline.joblib'
@@ -97,6 +91,6 @@ if __name__ == "__main__":
 
     df = pd.read_csv(csv_file)
 
-    X_train, X_test, y_train, y_test = preprocess_data(df, target_column, save_path, file_path, final_dataset_path)
+    preprocess_data(df, target_column, save_path, file_path, final_dataset_path)
 
     print("Preprocess Done")
