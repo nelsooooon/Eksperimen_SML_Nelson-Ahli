@@ -99,7 +99,7 @@ pip install pandas numpy scikit-learn matplotlib seaborn joblib
 3. **For Jupyter Notebook (optional):**
 
 ```bash
-pip install jupyter notebook
+pip install notebook
 ```
 
 ## Usage
@@ -203,11 +203,15 @@ Main function: `preprocess_data(data, target_column, save_path, file_path, final
 - `file_path`: Path to save column headers
 - `final_dataset_path`: Path to save preprocessed data
 
-**Returns:**
+**Outputs:**
 
 - Preprocessed dataset (saved to CSV)
 - Serialized preprocessing pipeline (joblib file)
 - Column headers file (CSV)
+
+**Returns:**
+
+- None
 
 ## Requirements
 
