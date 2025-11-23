@@ -39,8 +39,8 @@ jobs:
 
       - name: Save to repo
         run: |
-          git config --global user.name ${{ secrets.username }}
-          git config --global user.email ${{ secrets.email }}
+          git config --global user.name ${{ secrets.USERNAME }}
+          git config --global user.email ${{ secrets.EMAIL }}
 
           git add preprocessing/preprocessor_pipeline.joblib 
           git add preprocessing/data.csv
