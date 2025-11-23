@@ -80,7 +80,8 @@
         "from sklearn.model_selection import train_test_split\n",
         "\n",
         "from google.colab import files\n",
-        "from joblib import dump"
+        "from joblib import dump\n",
+        "import os"
       ],
       "metadata": {
         "id": "BlmvjLY9M4Yj"
@@ -2872,9 +2873,7 @@
         "target_column = 'Churn'\n",
         "save_path = 'preprocessing/preprocessor_pipeline.joblib'\n",
         "file_path = 'preprocessing/data.csv'\n",
-        "final_dataset_path = 'preprocessing/WA_Fn-UseC_-Telco-Customer-Churn_preprocessing.csv'\n",
-        "\n",
-        "X_train, X_test, y_train, y_test = preprocess_data(df, target_column, save_path, file_path, final_dataset_path)"
+        "final_dataset_path = 'preprocessing/WA_Fn-UseC_-Telco-Customer-Churn_preprocessing.csv'"
       ],
       "metadata": {
         "colab": {
@@ -2893,6 +2892,24 @@
           ]
         }
       ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "if __name__ == \"__main__\":\n",
+        "    csv_file = \"WA_Fn-UseC_-Telco-Customer-Churn.csv\"\n",
+        "\n",
+        "    df = pd.read_csv(csv_file)\n",
+        "\n",
+        "    X_train, X_test, y_train, y_test = preprocess_data(df, target_column, save_path, file_path, final_dataset_path)\n",
+        "\n",
+        "    print(\"Preprocess Done\")"
+      ],
+      "metadata": {
+        "id": "iItd7RNDjzF-"
+      },
+      "execution_count": null,
+      "outputs": []
     }
   ]
 }
