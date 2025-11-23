@@ -44,6 +44,7 @@ jobs:
 
           git add preprocessing/preprocessor_pipeline.joblib 
           git add preprocessing/data.csv
+          git add preprocessing/WA_Fn-UseC_-Telco-Customer-Churn_preprocessing.csv
           
           git commit -m "Save from CI run [skip ci]"
           git push origin main
