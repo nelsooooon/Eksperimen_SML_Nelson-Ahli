@@ -2790,7 +2790,7 @@
     {
       "cell_type": "code",
       "source": [
-        "def preprocess_data(data, target_column, save_path, file_path):\n",
+        "def preprocess_data(data, target_column, save_path, file_path, final_dataset_path):\n",
         "    data = data.copy()\n",
         "    data = data.drop_duplicates()\n",
         "\n",
@@ -2799,7 +2799,7 @@
         "\n",
         "    numeric_features = ['tenure', 'MonthlyCharges', 'TotalCharges']\n",
         "    categorical_features = data.select_dtypes(include=['object']).columns.tolist()\n",
-        "    ordinal_features = ['tenure_binning']\n",
+        "    ordinal_features = ['Churn', 'tenure_binning']\n",
         "\n",
         "    column_names = data.columns\n",
         "    column_names = data.columns.drop(target_column)\n",
@@ -2844,11 +2844,12 @@
         "        ]\n",
         "    )\n",
         "\n",
+        "    data = pd.DataFrame(preprocessor.fit_transform(data), columns=preprocessor.get_feature_names_out())\n",
+        "    data.to_csv(file_path, index=False)\n",
+        "    print(f\"Data berhasil disimpan ke: {file_path}\")\n",
+        "\n",
         "    X = data.drop(columns=[target_column])\n",
         "    y = data[target_column]\n",
-        "\n",
-        "    le = LabelEncoder()\n",
-        "    y = le.fit_transform(y)\n",
         "\n",
         "    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n",
         "\n",
@@ -2868,7 +2869,12 @@
     {
       "cell_type": "code",
       "source": [
-        "X_train, X_test, y_train, y_test = preprocess_data(df, 'Churn', 'preprocessing/preprocessor_pipeline.joblib', 'preprocessing/data.csv')"
+        "target_column = 'Churn'\n",
+        "save_path = 'preprocessing/preprocessor_pipeline.joblib'\n",
+        "file_path = 'preprocessing/data.csv'\n",
+        "final_dataset_path = 'preprocessing/WA_Fn-UseC_-Telco-Customer-Churn_preprocessing.csv'\n",
+        "\n",
+        "X_train, X_test, y_train, y_test = preprocess_data(df, target_column, save_path, file_path, final_dataset_path)"
       ],
       "metadata": {
         "colab": {
